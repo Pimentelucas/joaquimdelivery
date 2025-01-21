@@ -2,10 +2,13 @@ package com.generation.joaquimdelivery.model;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,6 +33,10 @@ public class RestauranteModel {
 	
 	@Size(min=10,max=100,message="O campo Endereço deve ter no mínimo 10 e no máximo 100 caracteres.")
 	private String endereco;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("restaurante")
+	private CategoriaModel categoria;
 
 	public Long getId() {
 		return id;
@@ -65,6 +72,14 @@ public class RestauranteModel {
 
 	public String getEndereco() {
 		return endereco;
+	}
+
+	public CategoriaModel getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(CategoriaModel categoria) {
+		this.categoria = categoria;
 	}
 
 	public void setEndereco(String endereco) {

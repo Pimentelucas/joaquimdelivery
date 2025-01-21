@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.generation.joaquimdelivery.model.Pedidos;
+import com.generation.joaquimdelivery.model.PedidoModel;
 
-public interface PedidosRepository extends JpaRepository<Pedidos, Long> {
+public interface PedidosRepository extends JpaRepository<PedidoModel, Long> {
 
-	public List <Pedidos> findAllByProdutoContainingIgnoreCase(@Param("produto") String produto);
+	public List <PedidoModel> findAllByProdutoContainingIgnoreCase(@Param("produto") String produto);
 	
 }

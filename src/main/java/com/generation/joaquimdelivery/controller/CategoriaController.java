@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.generation.joaquimdelivery.model.Categoria;
+import com.generation.joaquimdelivery.model.CategoriaModel;
 import com.generation.joaquimdelivery.repository.CategoriaRepository;
 
 import jakarta.validation.Valid;
@@ -32,32 +32,32 @@ public class CategoriaController {
     private CategoriaRepository categoriaRepository;
     
     @GetMapping
-    public ResponseEntity<List<Categoria>> getAll(){
+    public ResponseEntity<List<CategoriaModel>> getAll(){
         return ResponseEntity.ok(categoriaRepository.findAll());
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Categoria> getById(@PathVariable Long id){
+    public ResponseEntity<CategoriaModel> getById(@PathVariable Long id){
         return categoriaRepository.findById(id)
             .map(resposta -> ResponseEntity.ok(resposta))
             .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
     
     @GetMapping("/descricao/{descricao}")
-    public ResponseEntity<List<Categoria>> getByTitle(@PathVariable 
+    public ResponseEntity<List<CategoriaModel>> getByTitle(@PathVariable 
     String descricao){
         return ResponseEntity.ok(categoriaRepository
             .findAllByDescricaoContainingIgnoreCase(descricao));
     }
     
     @PostMapping
-    public ResponseEntity<Categoria> post(@Valid @RequestBody Categoria categoria){
+    public ResponseEntity<CategoriaModel> post(@Valid @RequestBody CategoriaModel categoria){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoriaRepository.save(categoria));
     }
     
     @PutMapping
-     public ResponseEntity<Categoria> put(@Valid @RequestBody Categoria categoria){
+     public ResponseEntity<CategoriaModel> put(@Valid @RequestBody CategoriaModel categoria){
         return categoriaRepository.findById(categoria.getId())
             .map(resposta -> ResponseEntity.status(HttpStatus.CREATED)
             .body(categoriaRepository.save(categoria)))
@@ -67,7 +67,7 @@ public class CategoriaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
+        Optional<CategoriaModel> categoria = categoriaRepository.findById(id);
         
         if(categoria.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

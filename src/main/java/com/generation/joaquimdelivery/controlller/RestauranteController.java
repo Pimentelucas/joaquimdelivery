@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.generation.joaquimdelivery.model.Postagem;
 import com.generation.joaquimdelivery.model.RestauranteModel;
 import com.generation.joaquimdelivery.repository.CategoriaRepository;
 import com.generation.joaquimdelivery.repository.RestauranteRepository;
@@ -33,6 +32,9 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
+	
 	@GetMapping
 	public ResponseEntity<List<RestauranteModel>> getAll() { 
 		return ResponseEntity.ok(restauranteRepository.findAll());
@@ -45,15 +47,15 @@ public class RestauranteController {
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
-	@GetMapping("/titulo/{titulo}")
-	public ResponseEntity<List<RestauranteModel>> getByTitulo(@PathVariable String titulo){
-		return ResponseEntity.ok(restauranteRepository.findAllByTituloContainingIgnoreCase(titulo));
+	@GetMapping("/restaurante/{nome}")
+	public ResponseEntity<List<RestauranteModel>> getByNome(@PathVariable String nome){
+		return ResponseEntity.ok(restauranteRepository.findAllByNomeContainingIgnoreCase(nome));
 		
 	}
 	
 	@PostMapping
 	public ResponseEntity<RestauranteModel> post(@Valid @RequestBody RestauranteModel restaurante){
-		if (CategoriaRepository.existsById(restaurante.getCategoria().getId()))
+		if (categoriaRepository.existsById(restaurante.getCategoria().getId()))
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(restauranteRepository.save(restaurante));
 		
@@ -64,7 +66,7 @@ public class RestauranteController {
 	public ResponseEntity<RestauranteModel> put(@Valid @RequestBody RestauranteModel restaurante){
 		if (restauranteRepository.existsById(restaurante.getId())) {
 			
-			if (CategoriaRepository.existsById(restaurante.getCategoria() .getId()))
+			if (categoriaRepository.existsById(restaurante.getCategoria().getId()))
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(restauranteRepository.save(restaurante));
 			
