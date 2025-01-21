@@ -21,14 +21,14 @@ public class PedidoModel {
 	
 	@NotBlank(message = "O atributo pedido é obrigatório!")
 	@Size(min = 5, max = 30, message = "O atributo pedido deve conter no mínimo 05 e no máximo 30 caracteres")
-	private String pedido;
+	private String produto;
 	
 	@ManyToOne
-	@JsonIgnoreProperties("pedidos")
+	@JsonIgnoreProperties("pedido")
 	private UsuarioModel usuario;
 	
 	@ManyToOne
-	@JsonIgnoreProperties("pedidos")
+	@JsonIgnoreProperties("pedido")
 	private RestauranteModel restaurante;
 
 	public Long getId() {
@@ -39,12 +39,12 @@ public class PedidoModel {
 		this.id = id;
 	}
 
-	public String getPedido() {
-		return pedido;
+	public String getProduto() {
+		return produto;
 	}
 
-	public void setPedido(String pedido) {
-		this.pedido = pedido;
+	public void setProduto(String produto) {
+		this.produto = produto;
 	}
 
 	public UsuarioModel getUsuario() {
