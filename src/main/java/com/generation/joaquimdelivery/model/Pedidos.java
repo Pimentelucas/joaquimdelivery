@@ -25,11 +25,11 @@ public class Pedidos {
 	
 	@ManyToOne
 	@JsonIgnoreProperties("pedidos")
-	private Usuario usuario;
+	private UsuarioModel usuario;
 	
 	@ManyToOne
 	@JsonIgnoreProperties("pedidos")
-	private Restaurante restaurante;
+	private RestauranteModel restaurante;
 
 	public Long getId() {
 		return id;
@@ -47,19 +47,19 @@ public class Pedidos {
 		this.pedido = pedido;
 	}
 
-	public Usuario getUsuario() {
+	public UsuarioModel getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(UsuarioModel usuario) {
 		this.usuario = usuario;
 	}
 
-	public Restaurante getRestaurante() {
+	public RestauranteModel getRestaurante() {
 		return restaurante;
 	}
 
-	public void setRestaurante(Restaurante restaurante) {
+	public void setRestaurante(RestauranteModel restaurante) {
 		this.restaurante = restaurante;
 	}
 	
