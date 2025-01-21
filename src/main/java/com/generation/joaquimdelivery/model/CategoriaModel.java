@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_categoria")
-public class Categoria {
+public class CategoriaModel {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

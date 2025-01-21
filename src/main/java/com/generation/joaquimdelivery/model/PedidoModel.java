@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_pedidos")
-public class Pedidos {
+public class PedidoModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

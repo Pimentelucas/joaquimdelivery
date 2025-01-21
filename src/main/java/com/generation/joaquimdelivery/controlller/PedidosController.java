@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.generation.joaquimdelivery.model.Pedidos;
+import com.generation.joaquimdelivery.model.PedidoModel;
 import com.generation.joaquimdelivery.repository.PedidosRepository;
+import com.generation.joaquimdelivery.repository.RestauranteRepository;
 
 import jakarta.validation.Valid;
 
@@ -36,41 +37,42 @@ public class PedidosController {
 	private RestauranteRepository restauranteRepository;
 	
 	@GetMapping
-	public ResponseEntity<List<Pedidos>> getAll(){
+	public ResponseEntity<List<PedidoModel>> getAll(){
 		return ResponseEntity.ok(pedidosRepository.findAll());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Pedidos> getById(@PathVariable Long id) {
+	public ResponseEntity<PedidoModel> getById(@PathVariable Long id) {
 		return pedidosRepository.findById(id)
 				.map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
 	@GetMapping("/produto")
-	public ResponseEntity<List<Pedidos>> getByProduto(@PathVariable String titulo) {
+	public ResponseEntity<List<PedidoModel>> getByProduto(@PathVariable String titulo) {
 		return ResponseEntity.ok(pedidosRepository.findAllByProdutoContainingIgnoreCase(titulo));
 	}
 	
 	@PostMapping
-	public ResponseEntity<Pedidos> post(@Valid @RequestBody Pedidos pedidos){
-		if (restauranteRepository.existsById(pedidos.getRestaurante().getId()))
+	public ResponseEntity<PedidoModel> post(@Valid @RequestBody PedidoModel pedido){
+		if (restauranteRepository.existsById(pedido.getRestaurante().getId()))
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(pedidosRepository.save(pedidos));
+				.body(pedidosRepository.save(pedido));	
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 	}
 	
 	@PutMapping
-	public ResponseEntity<Pedidos> put(@Valid @RequestBody Pedidos pedidos) {
-		return pedidosRepository.findById(pedidos.getId())
+	public ResponseEntity<PedidoModel> put(@Valid @RequestBody PedidoModel pedido) {
+		return pedidosRepository.findById(pedido.getId())
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK)
-					.body(pedidosRepository.save(pedidos)))
+					.body(pedidosRepository.save(pedido)))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
-		Optional<Pedidos> pedidos = pedidosRepository.findById(id);
+		Optional<PedidoModel> pedidos = pedidosRepository.findById(id);
 		
 		if(pedidos.isEmpty())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
