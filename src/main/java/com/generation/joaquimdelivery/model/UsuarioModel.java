@@ -29,7 +29,7 @@ public class UsuarioModel {
 	private String usuario;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="usuario",cascade=CascadeType.REMOVE)
-	private List<PedidoModel> pedido;
+	private List<Pedidos> pedido;
 
 	public Long getId() {
 		return id;
@@ -55,11 +55,11 @@ public class UsuarioModel {
 		this.usuario = usuario;
 	}
 
-	public List<PedidoModel> getPedido() {
+	public List<Pedidos> getPedido() {
 		return pedido;
 	}
 
-	public void setPedido(List<PedidoModel> pedido) {
+	public void setPedido(List<Pedidos> pedido) {
 		this.pedido = pedido;
 	}
 	

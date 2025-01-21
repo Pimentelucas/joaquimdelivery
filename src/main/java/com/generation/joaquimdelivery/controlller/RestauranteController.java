@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.joaquimdelivery.model.Postagem;
+import com.generation.joaquimdelivery.model.RestauranteModel;
+import com.generation.joaquimdelivery.repository.CategoriaRepository;
+import com.generation.joaquimdelivery.repository.RestauranteRepository;
 
 import jakarta.validation.Valid;
 
@@ -31,25 +34,25 @@ public class RestauranteController {
 	private RestauranteRepository restauranteRepository;
 	
 	@GetMapping
-	public ResponseEntity<List<Restaurante>> getAll() { 
+	public ResponseEntity<List<RestauranteModel>> getAll() { 
 		return ResponseEntity.ok(restauranteRepository.findAll());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Restaurante> getById(@PathVariable Long id) {
+	public ResponseEntity<RestauranteModel> getById(@PathVariable Long id) {
 		return restauranteRepository.findById(id)
 				.map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
 	@GetMapping("/titulo/{titulo}")
-	public ResponseEntity<List<Restaurante>> getByTitulo(@PathVariable String titulo){
+	public ResponseEntity<List<RestauranteModel>> getByTitulo(@PathVariable String titulo){
 		return ResponseEntity.ok(restauranteRepository.findAllByTituloContainingIgnoreCase(titulo));
 		
 	}
 	
 	@PostMapping
-	public ResponseEntity<Restaurante> post(@Valid @RequestBody Restaurante restaurante){
+	public ResponseEntity<RestauranteModel> post(@Valid @RequestBody RestauranteModel restaurante){
 		if (CategoriaRepository.existsById(restaurante.getCategoria().getId()))
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(restauranteRepository.save(restaurante));
@@ -58,10 +61,10 @@ public class RestauranteController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Restaurante> put(@Valid @RequestBody Restaurante restaurante){
+	public ResponseEntity<RestauranteModel> put(@Valid @RequestBody RestauranteModel restaurante){
 		if (restauranteRepository.existsById(restaurante.getId())) {
 			
-			if (categoriaRepository.existsById(restaurante.getCategoria() .getId()))
+			if (CategoriaRepository.existsById(restaurante.getCategoria() .getId()))
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(restauranteRepository.save(restaurante));
 			
@@ -75,9 +78,9 @@ public class RestauranteController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
-		Optional<Restaurante> postagem = restauranteRepository.findById(id);
+		Optional<RestauranteModel> postagem = restauranteRepository.findById(id);
 		
-		if(restaurante.isEmpty())
+		if(postagem.isEmpty())
 			throw new ResponseStatusException (HttpStatus.NOT_FOUND);
 		
 		restauranteRepository.deleteById(id);
