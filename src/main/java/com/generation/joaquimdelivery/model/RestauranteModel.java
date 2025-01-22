@@ -34,6 +34,13 @@ public class RestauranteModel {
 	@Size(min=10,max=100,message="O campo Endereço deve ter no mínimo 10 e no máximo 100 caracteres.")
 	private String endereco;
 	
+	@NotNull(message="O campo Saudavel não pode ser nulo e deve ser preenchido com 'true' ou 'false'")
+	private Boolean saudavel;
+	
+	public Boolean getSaudavel() {
+		return saudavel;
+	}
+
 	@ManyToOne
 	@JsonIgnoreProperties("restaurante")
 	private CategoriaModel categoria;
@@ -41,6 +48,10 @@ public class RestauranteModel {
 	public Long getId() {
 		return id;
 	}
+	
+	public void setSaudavel(Boolean saudavel) {
+		this.saudavel = saudavel;
+	}	
 
 	public void setId(Long id) {
 		this.id = id;
@@ -85,6 +96,5 @@ public class RestauranteModel {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
-	
 	
 }

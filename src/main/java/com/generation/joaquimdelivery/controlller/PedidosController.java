@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.generation.joaquimdelivery.model.PedidoModel;
 import com.generation.joaquimdelivery.repository.PedidosRepository;
 import com.generation.joaquimdelivery.repository.RestauranteRepository;
+import com.generation.joaquimdelivery.service.PedidoService;
 
 import jakarta.validation.Valid;
 
@@ -35,6 +36,9 @@ public class PedidosController {
 	
 	@Autowired
 	private RestauranteRepository restauranteRepository;
+	
+	@Autowired
+	private PedidoService pedidoService;
 	
 	@GetMapping
 	public ResponseEntity<List<PedidoModel>> getAll(){
@@ -55,9 +59,12 @@ public class PedidosController {
 	
 	@PostMapping
 	public ResponseEntity<PedidoModel> post(@Valid @RequestBody PedidoModel pedido){
-		if (restauranteRepository.existsById(pedido.getRestaurante().getId()))
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(pedidosRepository.save(pedido));	
+		if (restauranteRepository.existsById(pedido.getRestaurante().getId())) {
+			
+			pedidoService.recomendarSaudavel(pedido);
+			
+		return ResponseEntity.status(HttpStatus.CREATED).body(pedidosRepository.save(pedido));	
+		}
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 	}
 	
