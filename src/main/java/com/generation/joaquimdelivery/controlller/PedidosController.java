@@ -50,16 +50,16 @@ public class PedidosController {
 	
 	@GetMapping("/produto")
 	public ResponseEntity<List<PedidoModel>> getByProduto(@PathVariable String titulo) {
-		return ResponseEntity.ok(pedidosRepository.findAllByProdutoContainingIgnoreCase(titulo));
+		return ResponseEntity.ok(pedidosRepository.findAllByProdutoContainingIgnoreCase(titulo)); 
 	}
 	
 	@PostMapping("/criar")
 	public ResponseEntity<PedidoModel> post(@Valid @RequestBody PedidoModel pedidos){
-		if (restauranteRepository.existsById(pedidos.getRestaurante().getId()))
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(pedidosRepository.save(pedidos));
-		
-		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if (restauranteRepository.existsById(pedidos.getRestaurante().getId())) {
+			
+		return ResponseEntity.status(HttpStatus.CREATED).body(pedidosRepository.save(pedidos));	
+		}
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 	}
 	
 	@PutMapping("/atualizar")

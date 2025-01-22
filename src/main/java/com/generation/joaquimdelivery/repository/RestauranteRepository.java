@@ -11,4 +11,6 @@ public interface RestauranteRepository extends JpaRepository<RestauranteModel,Lo
 
 	public List<RestauranteModel> findAllByNomeContainingIgnoreCase(@Param("nome")String nome);	
 	
+	public List<RestauranteModel> findAllBySaudavel(@Param("saudavel")boolean saudavel);	
+	
 }

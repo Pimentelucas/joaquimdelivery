@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.generation.joaquimdelivery.model.RestauranteModel;
 import com.generation.joaquimdelivery.repository.CategoriaRepository;
 import com.generation.joaquimdelivery.repository.RestauranteRepository;
+import com.generation.joaquimdelivery.service.RestauranteService;
 
 import jakarta.validation.Valid;
 
@@ -34,6 +35,9 @@ public class RestauranteController {
 	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	
+	@Autowired
+	private RestauranteService restauranteService;
 	
 	@GetMapping("/all")
 	public ResponseEntity<List<RestauranteModel>> getAll() { 
@@ -88,7 +92,15 @@ public class RestauranteController {
 		restauranteRepository.deleteById(id);
 		
 	}
+	
+	@GetMapping("/saudavel")
+	public ResponseEntity<List<RestauranteModel>> getBySaudavel() {
+		
+		return restauranteService.getBySaudavel()
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
+}
 	
 	
 

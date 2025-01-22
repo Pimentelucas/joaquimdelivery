@@ -37,6 +37,17 @@ public class RestauranteModel {
 	@ManyToOne
 	@JsonIgnoreProperties("restaurante")
 	private CategoriaModel categoria;
+	
+	@NotNull(message="O campo Saudavel não pode ser nulo e deve ser preenchido com 'true' ou 'false'")
+	private boolean saudavel;
+	
+	public boolean getSaudavel() {
+		return saudavel;
+	}
+
+	public void setSaudavel(boolean saudavel) {
+		this.saudavel = saudavel;
+	}	
 
 	public Long getId() {
 		return id;
