@@ -21,7 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.generation.joaquimdelivery.model.PedidoModel;
 import com.generation.joaquimdelivery.repository.PedidosRepository;
 import com.generation.joaquimdelivery.repository.RestauranteRepository;
-import com.generation.joaquimdelivery.service.PedidoService;
 
 import jakarta.validation.Valid;
 
@@ -37,10 +36,7 @@ public class PedidosController {
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
-	@Autowired
-	private PedidoService pedidoService;
-	
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<List<PedidoModel>> getAll(){
 		return ResponseEntity.ok(pedidosRepository.findAll());
 	}
@@ -57,27 +53,25 @@ public class PedidosController {
 		return ResponseEntity.ok(pedidosRepository.findAllByProdutoContainingIgnoreCase(titulo));
 	}
 	
-	@PostMapping
-	public ResponseEntity<PedidoModel> post(@Valid @RequestBody PedidoModel pedido){
-		if (restauranteRepository.existsById(pedido.getRestaurante().getId())) {
-			
-			pedidoService.recomendarSaudavel(pedido);
-			
-		return ResponseEntity.status(HttpStatus.CREATED).body(pedidosRepository.save(pedido));	
-		}
-		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+	@PostMapping("/criar")
+	public ResponseEntity<PedidoModel> post(@Valid @RequestBody PedidoModel pedidos){
+		if (restauranteRepository.existsById(pedidos.getRestaurante().getId()))
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(pedidosRepository.save(pedidos));
+		
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 	
-	@PutMapping
-	public ResponseEntity<PedidoModel> put(@Valid @RequestBody PedidoModel pedido) {
-		return pedidosRepository.findById(pedido.getId())
+	@PutMapping("/atualizar")
+	public ResponseEntity<PedidoModel> put(@Valid @RequestBody PedidoModel pedidos) {
+		return pedidosRepository.findById(pedidos.getId())
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK)
-					.body(pedidosRepository.save(pedido)))
+					.body(pedidosRepository.save(pedidos)))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/deletar/{id}")
 	public void delete(@PathVariable Long id) {
 		Optional<PedidoModel> pedidos = pedidosRepository.findById(id);
 		

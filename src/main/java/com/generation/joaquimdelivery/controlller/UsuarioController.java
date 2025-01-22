@@ -67,7 +67,7 @@ public class UsuarioController {
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/deletar_usuario/{id}")
+	@DeleteMapping("/deletarusuario/{id}")
 	public void deleteUsuario(@PathVariable Long id) {
 		Boolean deletar = usuarioService.deletarUsuario(id);
 		

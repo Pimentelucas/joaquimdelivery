@@ -19,9 +19,6 @@ public class UsuarioService {
 	
 	public Optional<UsuarioModel> cadastrarUsuario(UsuarioModel usuario) {
 
-		if (usuarioRepository.findById(usuario.getId()).isPresent())
-			return Optional.empty();
-
 		return Optional.of(usuarioRepository.save(usuario));
 	
 	}
@@ -30,7 +27,7 @@ public class UsuarioService {
 		
 		if(usuarioRepository.findById(usuario.getId()).isPresent()) {
 
-			Optional<UsuarioModel> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
+			Optional<UsuarioModel> buscaUsuario = usuarioRepository.findById(usuario.getId());
 
 			if ( (buscaUsuario.isPresent()) && ( buscaUsuario.get().getId() != usuario.getId()))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);

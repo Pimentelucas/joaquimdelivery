@@ -35,7 +35,7 @@ public class RestauranteController {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<List<RestauranteModel>> getAll() { 
 		return ResponseEntity.ok(restauranteRepository.findAll());
 	}
@@ -47,13 +47,13 @@ public class RestauranteController {
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
-	@GetMapping("/restaurante/{nome}")
+	@GetMapping("/nome/{nome}")
 	public ResponseEntity<List<RestauranteModel>> getByNome(@PathVariable String nome){
 		return ResponseEntity.ok(restauranteRepository.findAllByNomeContainingIgnoreCase(nome));
 		
 	}
 	
-	@PostMapping
+	@PostMapping("/criar")
 	public ResponseEntity<RestauranteModel> post(@Valid @RequestBody RestauranteModel restaurante){
 		if (categoriaRepository.existsById(restaurante.getCategoria().getId()))
 		return ResponseEntity.status(HttpStatus.CREATED)
@@ -62,7 +62,7 @@ public class RestauranteController {
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Tema não existe!", null);
 	}
 	
-	@PutMapping
+	@PutMapping("/atualizar")
 	public ResponseEntity<RestauranteModel> put(@Valid @RequestBody RestauranteModel restaurante){
 		if (restauranteRepository.existsById(restaurante.getId())) {
 			
@@ -78,7 +78,7 @@ public class RestauranteController {
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/deletar/{id}")
 	public void delete(@PathVariable Long id) {
 		Optional<RestauranteModel> postagem = restauranteRepository.findById(id);
 		
